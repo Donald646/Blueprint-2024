@@ -1,7 +1,8 @@
 from flask import Flask, request
 from flask_restful import Api, Resource, reqparse, abort, fields, marshal_with
+from flask_cors import CORS
 import openai
-
+import os
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for the entire app
@@ -11,10 +12,11 @@ openai.api_key = API_KEY
 
 
 def promptInput(userInput):
+
     trainingMessages = [
         {"role": "system", "content": "You are a podcaster who helps turn textbook and news article inputs, and possibly other inputs into digestible, moderately entertaining, and comprehensive shortform solo podcasts. Your content will be immediately fed into a text to speech generator which will then be outputted to students around the country, so please ensure that you have high quality and also nothing outside of content which should be read alound"},
         {"role": "user", "content": """ 
-     With the text in brackets([]) below create the podcast that aligns with previous instructions:
+     With the text in brackets([]) below create the podcast that aligns with system instructions:
     [
      Like most scientific disciplines, fluid mechanics has a history of erratically occurring
 early achievements, then an intermediate era of steady fundamental discoveries in the
@@ -73,8 +75,57 @@ And that, dear listeners, brings us to the end of our journey through the histor
 Thank you for joining me on this episode of "Fluid Insights." Until next time, stay curious and go with the flow!
 
 """},
-        {"role": "user", "content": "input"},
+        {"role": "user", "content":
+         """
+         With the text in brackets([]) below create the podcast based off of the Joe Rogan podcast that aligns with system instructions:
+At the end of the nineteenth century, unification between experimental hydraulics
+and theoretical hydrodynamics finally began. William Froude (1810–1879) and his son
+Robert (1846–1924) developed laws of model testing; Lord Rayleigh (1842–1919)
+proposed the technique of dimensional analysis; and Osborne Reynolds (1842–1912)
+published the classic pipe experiment in 1883, which showed the importance of the
+dimensionless Reynolds number named after him. Meanwhile, viscous-flow theory
+was available but unexploited, since Navier (1785–1836) and Stokes (1819–1903) had
+successfully added newtonian viscous terms to the equations of motion. The resulting Navier-Stokes equations were too difficult to analyze for arbitrary flows. Then, in
+1904, a German engineer, Ludwig Prandtl (1875–1953), Fig. 1.2, published perhaps the
+most important paper ever written on fluid mechanics. Prandtl pointed out that fluid flows
+with small viscosity, such as water flows and airflows, can be divided into a thin viscous layer, or boundary layer, near solid surfaces and interfaces, patched onto a nearly
+inviscid outer layer, where the Euler and Bernoulli equations apply. Boundary-layer
+theory has proved to be a very important tool in modern flow analysis. The twentiethcentury foundations for the present state of the art in fluid mechanics were laid in a series
+of broad-based experiments and theories by Prandtl and his two chief friendly competitors, Theodore von Kármán (1881–1963) and Sir Geoffrey I. Taylor (1886–1975). Many
+of the results sketched here from a historical point of view will, of course, be discussed
+in this textbook. More historical details can be found in Refs. 12 to 14.
+The second half of the twentieth century introduced a new tool: Computational
+Fluid Dynamics (CFD). The earliest paper on the subject known to this writer was
+by A. Thom in 1933 [47], a laborious, but accurate, hand calculation of flow past a
+cylinder at low Reynolds numbers. Commercial digital computers became available
+in the 1950s, and personal computers in the 1970s, bringing CFD into adulthood. A
+legendary first textbook was by Patankar [3]. Presently, with increases in computer
+speed and memory, almost any laminar flow can be modeled accurately. Turbulent
+flow is still calculated with empirical models, but Direct Numerical Simulation [7, 8]
+is possible for low Reynolds numbers. Another five orders of magnitude in computer
+speed are needed before general turbulent flows can be calculated. That may not be
+possible, due to size limits of nano- and pico-elements. But, if general DNS develops, Gad-el-Hak [14] raises the prospect of a shocking future: all of fluid mechanics
+reduced to a black box, with no real need for teachers, researchers, writers, or fluids
+engineers.
+    """},
+        {"role": "assistant", "content": """
+         Alright, folks, welcome back to another mind-bending episode of "Fluid Chronicles." Today, we're unraveling the twists and turns of fluid mechanics – a journey from the 19th century to the cutting-edge tech of today. It's like a trip through the cosmos, but for liquids. I'm your host, and let's dive into this sea of knowledge.
+
+So, at the end of the 19th century, something magical happened – the experimental hydraulics and theoretical hydrodynamics finally shook hands. William Froude and his son Robert dropped some serious laws of model testing, Lord Rayleigh introduced the mind-blowing technique of dimensional analysis, and Osborne Reynolds? Oh, he showed us the importance of the dimensionless Reynolds number in his classic pipe experiment.
+
+Now, you had viscous-flow theory hanging around, but it was like the neglected stepchild until Ludwig Prandtl, a German engineer, dropped the mic in 1904. He realized that flows with small viscosity can be split into a thin viscous layer and a nearly inviscid outer layer. Enter boundary-layer theory – a game-changer in modern flow analysis.
+
+The 20th century rolls in with Prandtl, Theodore von Kármán, and Sir Geoffrey I. Taylor, laying the foundations for the fluid mechanics we know today. They're the OGs of experimentation and theories, shaping the present state of the art.
+
+But wait, the second half of the 20th century throws a curveball – Computational Fluid Dynamics (CFD). A guy named A. Thom started the game in 1933 with hand calculations, but it wasn't until the 1950s and 1970s that commercial and personal computers stepped in. CFD grew up real fast. Patankar wrote the legendary first textbook, and now, with computers getting faster, almost any laminar flow can be modeled accurately.
+
+However, turbulent flow still keeps us on our toes. Empirical models do the trick, but we dream of Direct Numerical Simulation for the big leagues. There's a wild idea floating around – a future where fluid mechanics becomes a black box. No need for teachers, researchers, or writers. Gad-el-Hak even throws out the possibility of a world where fluid engineers become obsolete.
+
+And there you have it, from the pioneers of the 19th century to the digital revolution of the 20th. Fluid mechanics, evolving faster than you can say turbulence. Thanks for joining me on this wild ride through "Fluid Chronicles." Don't forget to hit that subscribe button, stay curious, and keep questioning everything!"""
+         },
+        {"role": "user", "content": userInput},
     ]
+
     return trainingMessages
 
 
@@ -85,18 +136,19 @@ class Summarization(Resource):
     def post(self):
         data = request.get_json()
         content = data[content]
-
+        setting = data[setting]
+        # prompt getting fed into message
+        finalPrompt = f"Make a podcast based off of {setting}"
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
-            messages=promptInput(content)
-
+            messages=promptInput(finalPrompt)
         )
         print(response['choices'][0]['message']['content'])
         pass
 
 
 # api.add_resource(TextToSpeech, '/tts')
-api.add_resources(Summarization, "/summarize")
+api.add_resource(Summarization, "/summarize")
 
 if __name__ == '__main__':
     app.run(debug=True)
