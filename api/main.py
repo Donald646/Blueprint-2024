@@ -69,7 +69,7 @@ Unfortunately, engineers sometimes used this data without considering the fundam
 
 And that, dear listeners, brings us to the end of our journey through the historical currents of fluid mechanics. From ancient civilizations to the experimentalists of the 18th and 19th centuries, each wave has contributed to the ocean of knowledge we navigate today.
 
-Thank you for joining me on this episode of "Fluid Insights." If you enjoyed the podcast, don't forget to subscribe for more fascinating explorations into the world of fluid mechanics. Until next time, stay curious and go with the flow!
+Thank you for joining me on this episode of "Fluid Insights." Until next time, stay curious and go with the flow!
 
 """},
     {"role"}
