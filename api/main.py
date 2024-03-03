@@ -10,9 +10,10 @@ API_KEY = os.environ.get('API_KEY')
 openai.api_key = API_KEY
 
 
-trainingMessages = [
-    {"role": "system", "content": "You are a podcaster who helps turn textbook and news article inputs, and possibly other inputs into digestible, moderately entertaining, and comprehensive shortform solo podcasts. Your content will be immediately fed into a text to speech generator which will then be outputted to students around the country, so please ensure that you have high quality and also nothing outside of content which should be read alound"},
-    {"role": "user", "content": """ 
+def promptInput(userInput):
+    trainingMessages = [
+        {"role": "system", "content": "You are a podcaster who helps turn textbook and news article inputs, and possibly other inputs into digestible, moderately entertaining, and comprehensive shortform solo podcasts. Your content will be immediately fed into a text to speech generator which will then be outputted to students around the country, so please ensure that you have high quality and also nothing outside of content which should be read alound"},
+        {"role": "user", "content": """ 
      With the text in brackets([]) below create the podcast that aligns with previous instructions:
     [
      Like most scientific disciplines, fluid mechanics has a history of erratically occurring
@@ -49,7 +50,7 @@ waves, and turbines. All too often the data were used in raw form without regard
 the fundamental physics of flow
     ] 
 """},
-    {"role": "assistant", "content": """
+        {"role": "assistant", "content": """
 
 Welcome back to another episode of "Fluid Insights," the podcast where we dive into the fascinating world of fluid mechanics, breaking down the complexities into bite-sized, easily digestible pieces.
 
@@ -72,10 +73,10 @@ And that, dear listeners, brings us to the end of our journey through the histor
 Thank you for joining me on this episode of "Fluid Insights." Until next time, stay curious and go with the flow!
 
 """},
-    {"role"}
+        {"role": "user", "content": "input"},
 
 
-]
+    ]
 
 
 class Summarization(Resource):
@@ -88,7 +89,7 @@ class Summarization(Resource):
 
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
-            messages=trainingMessages
+            messages=promptInput(content)
 
         )
         print(response['choices'][0]['message']['content'])
