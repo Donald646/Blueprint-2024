@@ -1,20 +1,22 @@
 from flask import Flask, request
 from flask_restful import Api, Resource, reqparse, abort, fields, marshal_with
 from flask_cors import CORS
-import openai
+from openai import OpenAI
 import os
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for the entire app
 api = Api(app)
-API_KEY = os.environ.get('API_KEY')
-openai.api_key = API_KEY
+os.environ["OPENAI_API_KEY"] = "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"
+client = OpenAI()
 
 
 def promptInput(userInput):
+    system_message = {"role": "system", "content": "You are a podcaster who helps turn textbook and news article inputs, and possibly other inputs into digestible, moderately entertaining, and comprehensive shortform solo podcasts. Your content will be immediately fed into a text to speech generator which will then be outputted to students around the country, so please ensure that you have high quality and also nothing outside of content which should be read alound"}
 
+    user_message = {"role": "user", "content": userInput}
     trainingMessages = [
-        {"role": "system", "content": "You are a podcaster who helps turn textbook and news article inputs, and possibly other inputs into digestible, moderately entertaining, and comprehensive shortform solo podcasts. Your content will be immediately fed into a text to speech generator which will then be outputted to students around the country, so please ensure that you have high quality and also nothing outside of content which should be read alound"},
+        system_message,
         {"role": "user", "content": """ 
      With the text in brackets([]) below create the podcast that aligns with system instructions:
     [
@@ -123,7 +125,7 @@ However, turbulent flow still keeps us on our toes. Empirical models do the tric
 
 And there you have it, from the pioneers of the 19th century to the digital revolution of the 20th. Fluid mechanics, evolving faster than you can say turbulence. Thanks for joining me on this wild ride through "Fluid Chronicles." Don't forget to hit that subscribe button, stay curious, and keep questioning everything!"""
          },
-        {"role": "user", "content": userInput},
+        user_message,
     ]
 
     return trainingMessages
@@ -135,16 +137,19 @@ class Summarization(Resource):
 
     def post(self):
         data = request.get_json()
-        content = data[content]
-        setting = data[setting]
+
+        preference = data["setting"]
         # prompt getting fed into message
-        finalPrompt = f"Make a podcast based off of {setting}"
-        response = openai.ChatCompletion.create(
+
+        finalPrompt = f"create a podcast based off of {preference}, and with the system instructions"
+        print(finalPrompt)
+        completion = client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=promptInput(finalPrompt)
         )
-        print(response['choices'][0]['message']['content'])
-        pass
+        print("completion", completion)
+        GPTresponse = completion['choices'][0]['message']['content']
+        return {"response": GPTresponse}
 
 
 # api.add_resource(TextToSpeech, '/tts')
