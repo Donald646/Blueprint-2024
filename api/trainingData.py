@@ -5,7 +5,7 @@ def promptInput(userInput):
     trainingMessages = [
         system_message,
         {"role": "user", "content": """ 
-     With the text in brackets([]) below create the podcast that aligns with system instructions:
+     With the text in brackets write a podcast script that aligns with system instructions:
     [
      Like most scientific disciplines, fluid mechanics has a history of erratically occurring
 early achievements, then an intermediate era of steady fundamental discoveries in the
@@ -66,8 +66,9 @@ Thank you for joining me on this episode of "Fluid Insights." Until next time, s
 """},
         {"role": "user", "content":
          """
-         With the text in brackets([]) below create the podcast based off of the Joe Rogan podcast that aligns with system instructions:
-At the end of the nineteenth century, unification between experimental hydraulics
+         With the text in the brackets write a podcast script based off of the Joe Rogan podcast that aligns with system instructions:
+         
+[At the end of the nineteenth century, unification between experimental hydraulics
 and theoretical hydrodynamics finally began. William Froude (1810–1879) and his son
 Robert (1846–1924) developed laws of model testing; Lord Rayleigh (1842–1919)
 proposed the technique of dimensional analysis; and Osborne Reynolds (1842–1912)
@@ -95,26 +96,50 @@ is possible for low Reynolds numbers. Another five orders of magnitude in comput
 speed are needed before general turbulent flows can be calculated. That may not be
 possible, due to size limits of nano- and pico-elements. But, if general DNS develops, Gad-el-Hak [14] raises the prospect of a shocking future: all of fluid mechanics
 reduced to a black box, with no real need for teachers, researchers, writers, or fluids
-engineers.
+engineers.]
     """},
         {"role": "assistant", "content": """
          Alright, folks, welcome back to another mind-bending episode of "Fluid Chronicles." Today, we're unraveling the twists and turns of fluid mechanics – a journey from the 19th century to the cutting-edge tech of today. It's like a trip through the cosmos, but for liquids. I'm your host, and let's dive into this sea of knowledge.
-
 So, at the end of the 19th century, something magical happened – the experimental hydraulics and theoretical hydrodynamics finally shook hands. William Froude and his son Robert dropped some serious laws of model testing, Lord Rayleigh introduced the mind-blowing technique of dimensional analysis, and Osborne Reynolds? Oh, he showed us the importance of the dimensionless Reynolds number in his classic pipe experiment.
-
 Now, you had viscous-flow theory hanging around, but it was like the neglected stepchild until Ludwig Prandtl, a German engineer, dropped the mic in 1904. He realized that flows with small viscosity can be split into a thin viscous layer and a nearly inviscid outer layer. Enter boundary-layer theory – a game-changer in modern flow analysis.
-
-The 20th century rolls in with Prandtl, Theodore von Kármán, and Sir Geoffrey I. Taylor, laying the foundations for the fluid mechanics we know today. They're the OGs of experimentation and theories, shaping the present state of the art.
-
-But wait, the second half of the 20th century throws a curveball – Computational Fluid Dynamics (CFD). A guy named A. Thom started the game in 1933 with hand calculations, but it wasn't until the 1950s and 1970s that commercial and personal computers stepped in. CFD grew up real fast. Patankar wrote the legendary first textbook, and now, with computers getting faster, almost any laminar flow can be modeled accurately.
-
+The 20th century rolls in with Prandtl, Theodore von Kármán, and Sir Geoffrey I. Taylor, laying the foundations for the fluid mechanics we know today. They're the OGs of experimentation and theories, shaping the present state of the art. But wait, the second half of the 20th century throws a curveball – Computational Fluid Dynamics (CFD). A guy named A. Thom started the game in 1933 with hand calculations, but it wasn't until the 1950s and 1970s that commercial and personal computers stepped in. CFD grew up real fast. Patankar wrote the legendary first textbook, and now, with computers getting faster, almost any laminar flow can be modeled accurately.
 However, turbulent flow still keeps us on our toes. Empirical models do the trick, but we dream of Direct Numerical Simulation for the big leagues. There's a wild idea floating around – a future where fluid mechanics becomes a black box. No need for teachers, researchers, or writers. Gad-el-Hak even throws out the possibility of a world where fluid engineers become obsolete.
-
 And there you have it, from the pioneers of the 19th century to the digital revolution of the 20th. Fluid mechanics, evolving faster than you can say turbulence. Thanks for joining me on this wild ride through "Fluid Chronicles." Don't forget to hit that subscribe button, stay curious, and keep questioning everything!"""
          },
         {"role": "user", "content": """
-          Summarize the text in the brackets ([ ]), into small digestible chunks that encapsulate the main idea and relavent details:
-            
+          Summarize the text in the brackets into small digestible chunks that encapsulate the main idea and relavent details:
+            [Like most scientific disciplines, fluid mechanics has a history of erratically occurring
+early achievements, then an intermediate era of steady fundamental discoveries in the
+eighteenth and nineteenth centuries, leading to the twenty-first-century era of “modern
+practice,” as we self-centeredly term our limited but up-to-date knowledge. Ancient
+civilizations had enough knowledge to solve certain flow problems. Sailing ships with
+oars and irrigation systems were both known in prehistoric times. The Greeks produced quantitative information. Archimedes and Hero of Alexandria both postulated
+the parallelogram law for addition of vectors in the third century B.C. Archimedes
+(285–212 B.C.) formulated the laws of buoyancy and applied them to floating and submerged bodies, actually deriving a form of the differential calculus as part of the
+analysis. The Romans built extensive aqueduct systems in the fourth century B.C. but
+left no records showing any quantitative knowledge of design principles.
+From the birth of Christ to the Renaissance there was a steady improvement in the
+design of such flow systems as ships and canals and water conduits but no recorded
+evidence of fundamental improvements in flow analysis. Then Leonardo da Vinci
+(1452–1519) stated the equation of conservation of mass in one-dimensional steady
+flow. Leonardo was an excellent experimentalist, and his notes contain accurate
+descriptions of waves, jets, hydraulic jumps, eddy formation, and both low-drag
+(streamlined) and high-drag (parachute) designs. A Frenchman, Edme Mariotte
+(1620–1684), built the first wind tunnel and tested models in it.
+Problems involving the momentum of fluids could finally be analyzed after Isaac
+Newton (1642–1727) postulated his laws of motion and the law of viscosity of the linear fluids now called newtonian. The theory first yielded to the assumption of a “perfect” or frictionless fluid, and eighteenth-century mathematicians (Daniel Bernoulli,
+Leonhard Euler, Jean d’Alembert, Joseph-Louis Lagrange, and Pierre-Simon Laplace)
+produced many beautiful solutions of frictionless-flow problems. Euler, Fig. 1.1, developed both the differential equations of motion and their integrated form, now called
+the Bernoulli equation. D’Alembert used them to show his famous paradox: that a body
+immersed in a frictionless fluid has zero drag. These beautiful results amounted to
+overkill, since perfect-fluid assumptions have very limited application in practice and
+most engineering flows are dominated by the effects of viscosity. Engineers began to
+reject what they regarded as a totally unrealistic theory and developed the science of
+hydraulics, relying almost entirely on experiment. Such experimentalists as Chézy,
+Pitot, Borda, Weber, Francis, Hagen, Poiseuille, Darcy, Manning, Bazin, and Weisbach
+produced data on a variety of flows such as open channels, ship resistance, pipe flows,
+waves, and turbines. All too often the data were used in raw form without regard to
+the fundamental physics of flow.]
           """},
         {"role": "assitant", "content": """
 {

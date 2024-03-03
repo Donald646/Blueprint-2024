@@ -7,8 +7,8 @@ from trainingData import promptInput
 app = Flask(__name__)
 CORS(app)  # Enable CORS for the entire app
 api = Api(app)
-
-client = OpenAI(api_key="env var")
+API_KEY = ""  # put api key here
+client = OpenAI(api_key=API_KEY)
 
 
 class Summarization(Resource):
@@ -17,11 +17,13 @@ class Summarization(Resource):
 
     def post(self):
         data = request.get_json()
-
-        preference = data["setting"]
+        content = data["content"]
+        setting = data["setting"]
         # prompt getting fed into message
-
-        finalPrompt = f"create a podcast based off of {preference}, and with the system instructions"
+        if setting == "podcast":
+            finalPrompt = f"create a podcast that aligns with the system instructions. [{content}]"
+        elif setting == "summarize":
+            finalPrompt = f"Summarize the text in the brackets into small digestible chunks that encapsulate the main idea and relavent details.[{content}]"
 
         completion = client.chat.completions.create(
             model="gpt-3.5-turbo",
