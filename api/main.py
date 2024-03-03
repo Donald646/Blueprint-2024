@@ -74,9 +74,8 @@ Thank you for joining me on this episode of "Fluid Insights." Until next time, s
 
 """},
         {"role": "user", "content": "input"},
-
-
     ]
+    return trainingMessages
 
 
 class Summarization(Resource):
